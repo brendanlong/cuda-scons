@@ -157,8 +157,8 @@ def Environment(*args, **keywords):
                         allowed_values = ('release', 'debug')))
 
   # add a variable to handle compute capability
-  vars.Add(EnumVariable('arch', 'Compute capability code generation', 'sm_10',
-                        allowed_values = ('sm_10', 'sm_11', 'sm_12', 'sm_13', 'sm_20', 'sm_21', 'sm_30')))
+  vars.Add(EnumVariable('arch', 'Compute capability code generation', None,
+                        allowed_values = ('sm_10', 'sm_11', 'sm_12', 'sm_13', 'sm_20', 'sm_21', 'sm_30','sm_32','sm_35','sm_37','sm_50','sm_52','sm_53')))
 
   # add a variable to handle warnings
   if os.name == 'posix':
@@ -187,7 +187,8 @@ def Environment(*args, **keywords):
   env.Append(CXXFLAGS = getCXXFLAGS(env['mode'], env['Wall'], env['Werror'], env.subst('$CXX')))
 
   # get NVCC compiler switches
-  env.Append(NVCCFLAGS = getNVCCFLAGS(env['mode'], env['arch']))
+  if 'arch' in env:
+      env.Append(NVCCFLAGS = getNVCCFLAGS(env['mode'], env['arch']))
 
   # get linker switches
   env.Append(LINKFLAGS = getLINKFLAGS(env['mode'], env.subst('$LINK')))
